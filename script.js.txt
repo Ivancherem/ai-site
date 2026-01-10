@@ -1,0 +1,88 @@
+// Мобильное меню
+const menuToggle = document.querySelector('.menu-toggle');
+const navLinks = document.querySelector('.nav-links');
+
+if (menuToggle && navLinks) {
+    menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        menuToggle.innerHTML = navLinks.classList.contains('active') 
+            ? '<i class="fas fa-times"></i>' 
+            : '<i class="fas fa-bars"></i>';
+    });
+}
+
+// Плавная прокрутка к форме
+function scrollToForm() {
+    const formSection = document.getElementById('contact');
+    if (formSection) {
+        formSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
+
+// Обработка формы
+const leadForm = document.getElementById('leadForm');
+const formSuccess = document.getElementById('formSuccess');
+
+if (leadForm && formSuccess) {
+    leadForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Получаем данные
+        const formData = {
+            name: document.getElementById('name').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            message: document.getElementById('message').value.trim(),
+            date: new Date().toLocaleString()
+        };
+        
+        // Проверка заполнения
+        if (!formData.name || !formData.email || !formData.phone) {
+            alert('Пожалуйста, заполните обязательные поля: Имя, Email и Телефон');
+            return;
+        }
+        
+        // Показываем успех
+        formSuccess.style.display = 'block';
+        this.style.display = 'none';
+        
+        // Логируем в консоль
+        console.log('📨 Новая заявка:');
+        console.log('👤 Имя:', formData.name);
+        console.log('📧 Email:', formData.email);
+        console.log('📱 Телефон:', formData.phone);
+        console.log('💬 Сообщение:', formData.message || '(не указано)');
+        console.log('⏰ Время:', formData.date);
+        console.log('====================');
+        
+        // Очистка через 5 секунд
+        setTimeout(() => {
+            this.reset();
+            this.style.display = 'block';
+            formSuccess.style.display = 'none';
+        }, 5000);
+    });
+}
+
+// Закрытие меню при клике на ссылку
+document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        if (navLinks && navLinks.classList.contains('active')) {
+            navLinks.classList.remove('active');
+            menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        }
+    });
+});
+
+// Инициализация
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 NeuraAI лендинг загружен!');
+    
+    // На мобильных скрываем меню по умолчанию
+    if (window.innerWidth <= 768 && navLinks) {
+        navLinks.classList.remove('active');
+    }
+});
